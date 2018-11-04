@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="mapper.BillMapper">
+    <resultMap id="mapA" type="entity.Bill">
+        <result property="uid" column="uid"/>
+        <result property="callCost" column="call_cost"/>
+        <result property="messageCost" column="message_cost"/>
+        <result property="localFlowCost" column="local_flow_cost"/>
+        <result property="nationalFlowCost" column="national_flow_cost"/>
+        <result property="freeCall" column="free_call"/>
+        <result property="freeMessage" column="free_message"/>
+        <result property="freeLocalFlow" column="free_local_flow"/>
+        <result property="freeNationalFlow" column="free_national_flow"/>
+        <result property="date" column="date"/>
+    </resultMap>
+
+    <select id="selectBill"  resultMap="mapA">
+        SELECT uid,call_cost, message_cost, local_flow_cost,
+            national_flow_cost,free_call,free_message,free_local_flow,free_national_flow,date
+        FROM bill
+        WHERE uid = #{uid}
+          AND YEAR(date) = #{year}
+          AND MONTH(date) = #{month}
+        LIMIT 1
+    </select>
+</mapper>

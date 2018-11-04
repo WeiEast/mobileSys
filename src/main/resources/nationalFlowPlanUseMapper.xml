@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.NationalFlowPlanUseMapper">
+    <resultMap id="NationalFlowPlanUseMap" type="entity.NationalFlowPlanUsage">
+        <result property="nffid" column="nffid"/>
+        <result property="pid" column="pid"/>
+        <result property="pname" column="pname"/>
+        <result property="freeVolume" column="free_Volume"/>
+        <result property="overVolume" column="over_Volume"/>
+        <result property="cost" column="over_national_flow_cost"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="entity.NationalFlowPlanUsage">
+        INSERT INTO national_flow_plan_use(nffid, pid, free_volume, over_volume)
+        VALUES(#{nffid}, #{pid}, #{freeVolume}, #{overVolume})
+    </insert>
+
+    <select id="listNationalFlowPlanUsages" resultMap="NationalFlowPlanUseMap">
+        SELECT nffid, p.pid as pid, p.name as pname, free_volume, over_volume, over_call_cost
+        FROM national_flow_plan_use c, plan p
+        WHERE nffid = #{nffid} AND p.pid=c.pid
+    </select>
+</mapper>

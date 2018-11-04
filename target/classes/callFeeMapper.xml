@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.CallFeeMapper">
+    <resultMap id="callFeeMap" type="entity.CallFee">
+        <result property="cfid" column="cfid"/>
+        <result property="uid" column="uid"/>
+        <result property="cost" column="cost"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
+    <insert id="insertCallFee" parameterType="entity.CallFee" useGeneratedKeys="true" keyProperty="cfid">
+      INSERT INTO call_fee(cfid, uid, cost, begin_date, end_date)
+              VALUES(#{cfid}, #{uid}, #{cost}, #{beginDate}, #{endDate})
+    </insert>
+
+    <select id="selectCallFeeByUserId" resultMap="callFeeMap">
+        SELECT cfid, uid, cost, begin_date, end_date
+        FROM call_fee
+        WHERE uid = #{uid}
+        ORDER BY begin_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectCallCost" resultMap="callFeeMap">
+        SELECT cost
+        FROM call_fee
+        WHERE uid = #{uid}
+        ORDER BY begin_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="listConcreteCallFeeByUserId" resultMap="callFeeMap">
+        SELECT cfid, uid, cost, begin_date, end_date
+        FROM call_fee
+        WHERE uid = #{uid}
+        ORDER BY begin_date DESC
+        LIMIT #{times}
+    </select>
+</mapper>

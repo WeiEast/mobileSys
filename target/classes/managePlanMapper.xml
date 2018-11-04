@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.ManagePlanMapper">
+    <!--planOp的映射-->
+    <resultMap id="planOpMap" type="entity.PlanOperation">
+        <result property="pid" column="pid"/>
+        <result property="uid" column="uid"/>
+        <result property="pname" column="name"/>
+        <result property="date" column="date"/>
+        <result property="optype" column="optype"/>
+        <result property="validDate" column="valid_date"
+                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+    </resultMap>
+
+    <select id="listPlanOpsByUserId" parameterType="Long" resultMap="planOpMap">
+        SELECT p.pid as pid,uid,name,date,optype,valid_date
+        FROM manage_plan m, plan p
+        WHERE  m.uid = #{uid}
+          AND m.pid = p.pid
+        ORDER BY date ASC
+    </select>
+
+    <select id="selectLatestPlanOp" parameterType="Long" resultMap="planOpMap">
+        SELECT p.pid as pid,uid,name,date,optype,valid_date
+        FROM manage_plan m, plan p
+        WHERE  m.uid = #{uid}
+               AND m.pid = p.pid
+               AND m.pid = #{pid}
+        ORDER BY date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectCancelConsumption" resultType="Double" >
+        SELECT SUM(p.cost)
+        FROM manage_plan m, plan p
+        WHERE m.pid=p.pid
+              AND m.uid = #{uid}
+              AND YEAR(m.date)=#{year}
+              AND MONTH(m.date)=#{month}
+              AND m.optype=0
+              AND m.valid_date='NOW'
+        GROUP BY m.uid;
+    </select>
+
+    <insert id="insertPlanOp" parameterType="entity.PlanOperation">
+        INSERT INTO manage_plan(pid, uid, date, optype, valid_date)
+          VALUES (#{pid}, #{uid}, #{date}, #{optype}, #{validDate})
+    </insert>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.LocalFlowPlanUseMapper">
+    <resultMap id="localFlowPlanUseMap" type="entity.LocalFlowPlanUsage">
+        <result property="lffid" column="lffid"/>
+        <result property="pid" column="pid"/>
+        <result property="pname" column="pname"/>
+        <result property="freeVolume" column="free_Volume"/>
+        <result property="overVolume" column="over_Volume"/>
+        <result property="cost" column="over_local_flow_cost"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="entity.LocalFlowPlanUsage">
+        INSERT INTO local_flow_plan_use(lffid, pid, free_volume, over_volume)
+        VALUES(#{lffid}, #{pid}, #{freeVolume}, #{overVolume})
+    </insert>
+
+    <select id="listLocalFlowPlanUsages" resultMap="localFlowPlanUseMap">
+        SELECT lffid, p.pid as pid, p.name as pname, free_Volume, over_Volume, over_call_cost
+        FROM local_flow_plan_use c, plan p
+        WHERE lffid = #{lffid} AND p.pid=c.pid
+    </select>
+</mapper>

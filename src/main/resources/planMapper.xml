@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.PlanMapper">
+    <resultMap id="planMapper" type="entity.Plan">
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="cost" column="cost"/>
+        <result property="freeCall" column="free_call"/>
+        <result property="overCallCost" column="over_call_cost"/>
+        <result property="freeMessage" column="free_message"/>
+        <result property="overMessageCost" column="over_message_cost"/>
+        <result property="localFlow" column="local_flow"/>
+        <result property="overLocalCost" column="over_local_cost"/>
+        <result property="nationalFlow" column="national_flow"/>
+        <result property="overNationalCost" column="over_national_cost"/>
+    </resultMap>
+
+    <insert id="insertPlan" parameterType="entity.Plan" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO plan(name, description, cost, free_call,
+                         over_call_cost, free_message, over_message_cost,
+                         local_flow, over_local_cost, national_flow,
+                         over_national_cost) VALUES (#{name}, #{description}, #{cost},
+                                                     #{freeCall}, #{overCallCost},
+                                                     #{freeMessage}, #{overMessageCost},
+                                                     #{localFlow}, #{overLocalCost},
+                                                     #{nationalFlow}, #{overNationalCost})
+    </insert>
+
+    <select id="selectPlanByPlanId" resultMap="planMapper">
+        SELECT * FROM plan WHERE pid=#{pid}
+    </select>
+</mapper>

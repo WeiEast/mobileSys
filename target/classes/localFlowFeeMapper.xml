@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.LocalFlowFeeMapper">
+    <resultMap id="localFeeMap" type="entity.LocalFlowFee">
+        <result property="lffid" column="lffid"/>
+        <result property="uid" column="uid"/>
+        <result property="cost" column="cost"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
+    <insert id="insertLocalFlowFee" parameterType="entity.LocalFlowFee" useGeneratedKeys="true" keyProperty="lffid">
+        INSERT INTO local_flow_fee(lffid, uid, cost, begin_date, end_date)
+        VALUES(#{lffid}, #{uid}, #{cost}, #{beginDate}, #{endDate})
+    </insert>
+
+    <select id="selectLocalFlowFeeByUserId" resultMap="localFeeMap">
+        SELECT lffid, uid, cost, begin_date, end_date
+        FROM local_flow_fee
+        WHERE uid = #{uid}
+        ORDER BY begin_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="listConcreteLocalFlowFeeByUserId" resultMap="localFeeMap">
+        SELECT lffid, uid, cost, begin_date, end_date
+        FROM local_flow_fee
+        WHERE uid = #{uid}
+        ORDER BY begin_date DESC
+        LIMIT #{times}
+    </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.CallPlanUseMapper">
+    <resultMap id="callPlanUseMap" type="entity.CallPlanUsage">
+        <result property="cfid" column="cfid"/>
+        <result property="pid" column="pid"/>
+        <result property="pname" column="pname"/>
+        <result property="freeTime" column="free_time"/>
+        <result property="overTime" column="over_time"/>
+        <result property="cost" column="over_call_cost"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="entity.CallPlanUsage">
+        INSERT INTO call_plan_use(cfid, pid, free_time, over_time)
+        VALUES(#{cfid}, #{pid}, #{freeTime}, #{overTime})
+    </insert>
+
+    <select id="listCallPlanUsages" resultMap="callPlanUseMap">
+        SELECT cfid, p.pid as pid, p.name as pname, free_time, over_time, over_call_cost
+        FROM call_plan_use c, plan p
+        WHERE cfid = #{cfid} AND p.pid=c.pid
+    </select>
+</mapper>

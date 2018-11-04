@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.UserPlanMapper">
+
+    <resultMap id="userPlanMap" type="entity.UserPlan">
+        <result property="uid" column="uid"/>
+        <result property="pid" column="pid"/>
+        <result property="leftNFlow" column="left_national_flow"/>
+        <result property="leftLFlow" column="left_local_flow"/>
+        <result property="leftMessage" column="left_message"/>
+        <result property="leftCall" column="left_call"/>
+    </resultMap>
+
+    <insert id="insertUserPlan"  parameterType="entity.UserPlan">
+        INSERT INTO user_plan(uid,pid,left_national_flow,left_local_flow,left_message,left_call)
+        VALUES (#{uid},#{pid},#{leftNFlow},#{leftLFlow},#{leftMessage},#{leftCall})
+    </insert>
+
+    <update id="updateUserPlan" parameterType="entity.UserPlan">
+        UPDATE user_plan
+        SET left_call = #{leftCall},
+            left_message = #{leftMessage},
+            left_local_flow = #{leftLFlow},
+            left_national_flow = #{leftNFlow}
+        WHERE pid = #{pid} AND uid=#{uid};
+    </update>
+
+    <select id="listUserPlan"  resultMap="userPlanMap">
+        SELECT * FROM user_plan WHERE uid = #{uid}
+    </select>
+
+    <!--<select id="selectNowConsumption"  resultType="Double">-->
+        <!--SELECT SUM(p.cost)-->
+        <!--FROM user_plan u, plan p-->
+        <!--WHERE uid = #{uid}-->
+          <!--AND u.pid=p.pid-->
+        <!--GROUP BY u.uid-->
+    <!--</select>-->
+
+    <delete id="deleteUserPlan" >
+        DELETE FROM user_plan WHERE uid=#{uid} AND pid=#{pid}
+    </delete>
+
+</mapper>
